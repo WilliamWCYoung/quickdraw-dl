@@ -11,14 +11,12 @@ def quickdraw(word):
 
     headers = {}
     headers["Host"] = "quickdraw.withgoogle.com"
-    headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0"
     headers["Accept"] = "application/json, text/javascript, */*; q=0.01"
     headers["Accept-Language"] = "en-US,en;q=0.5"
     headers["Accept-Encoding"] = "gzip, deflate, br"
     headers["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8"
     headers["X-Requested-With"] = "XMLHttpRequest"
     headers["Referer"] = "https://quickdraw.withgoogle.com/"
-    headers["Content-Length"] = "27"
     headers["Connection"] = "keep-alive"
 
     data = {'method': 'gallery', 'word': word}
