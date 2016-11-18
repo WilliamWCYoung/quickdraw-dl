@@ -3,13 +3,13 @@
 
 ## Introduction
 
-This script downloads submitted doodles to a new game by Google. The objective of the game is to draw well enough to be recognized by their neural network, very fun! 
+This script downloads doodles submitted to "Quick, Draw!", a new game by Google. The objective of the game is to draw well enough to be recognized by their neural network.
 
 The game itself can be found at https://quickdraw.withgoogle.com/. 
 
-Quickdraw-dl will download the top doodles for a given keyword. These doodles are SVG paths, so the script will translate them into a valid format and save them within a subdirectory.
+Quickdraw-dl will download the top doodles for a given keyword. These doodles are provided in Google's IME format. Handily, it's not far off SVG paths, so the script will translate them into a valid format and save the resulting image within a subdirectory.
 
-N.B. This script is a clone of their own API calls, and although it responds, should be respected.
+N.B. This script is a clone of the API calls made by quickdraw, and although it responds, usage should moderated.
 
 ## Installation
 
