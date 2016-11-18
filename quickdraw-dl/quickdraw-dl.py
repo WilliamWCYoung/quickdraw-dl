@@ -5,7 +5,7 @@ import requests
 import json
 import ast
 import os
-import datetime
+import hashlib
 
 def quickdraw(word):
     url = 'https://quickdraw.withgoogle.com/api'
@@ -33,12 +33,14 @@ def quickdraw(word):
 
     data = json.loads(r.text)
     
-    target = open("./images/" + word + '/'+datetime.datetime.now().strftime("%d%m%y%H%M%S")+'-response.txt', 'w')
+    m = hashlib.md5()
+    m.update(r.text.encode('utf-8'))
+    
+    target = open("./images/" + word + "/" + m.hexdigest()[:5]+'.txt', 'w')
     target.truncate()
     target.write(r.text)
     target.close()
 
-    n = 0
 
     for trace in data["images"]:
         trace = json.loads('{"trace":'+trace["image"]+'}')["trace"]
@@ -83,18 +85,22 @@ def quickdraw(word):
         width = (max_x*scale_factor)+100
         height = (max_y*scale_factor)+100
         
-        target = open("./images/" + word + '/' + str(n) + '.svg', 'w')
-        target.truncate()
-        target.write('<svg width="'+str(width)+'" height="'+str(height)+'" viewBox="0 0 '+str(width)+' '+str(height)+'" xmlns="http://www.w3.org/2000/svg">\n')
+        file_contents = ""
+        
+        file_contents += '<svg width="'+str(width)+'" height="'+str(height)+'" viewBox="0 0 '+str(width)+' '+str(height)+'" xmlns="http://www.w3.org/2000/svg">\n'
 
         for stroke in trace:
             d = ' '.join(['%s%d %d' % (['M', 'L'][i>0], x, y) for i, (x, y) in enumerate(zip(stroke[0],stroke[1]))])
-            target.write('<path fill="none" stroke-linecap="round" stroke-width="3" stroke="rgba(0,0,0,1.00)" d="'+d+'"/>\n')
+            file_contents += '<path fill="none" stroke-linecap="round" stroke-width="3" stroke="rgba(0,0,0,1.00)" d="'+d+'"/>\n'
             
-        target.write('</svg>\n')
-        target.close()
+        file_contents += '</svg>\n'
+            
+        m.update(file_contents.encode('utf-8'))
         
-        n += 1
+        target = open("./images/" + word + '/' + m.hexdigest()[:5] + '.svg', 'w')
+        target.truncate()
+        target.write(file_contents)
+        target.close()
         
 if __name__ == "__main__":
     if len(sys.argv) != 2:
