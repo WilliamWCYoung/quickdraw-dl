@@ -31,15 +31,60 @@ def quickdraw(word):
     os.makedirs("./images/" + word, exist_ok=True)
 
     data = json.loads(r.text)
+    
+    target = open("./images/" + word + '/raw_response.txt', 'w')
+    target.truncate()
+    target.write(r.text)
+    target.close()
 
     i = 0
 
     for trace in data["images"]:
         trace = json.loads('{"trace":'+trace["image"]+'}')["trace"]
         
+        min_x = trace[0][0][0]
+        min_y = trace[0][1][0]
+        
+        for stroke in trace:
+            for value in stroke[0]:
+                if value < min_x:
+                    min_x = value
+                    
+            for value in stroke[1]:
+                if value < min_y:
+                    min_y = value
+        
+        
+        for i in range(len(trace)):
+            for f in range(len(trace[i][0])):
+                trace[i][0][f] = trace[i][0][f] - min_x
+                trace[i][1][f] = trace[i][1][f] - min_y
+
+        max_x = trace[0][0][0]
+        max_y = trace[0][1][0]
+        
+        for stroke in trace:
+            for value in stroke[0]:
+                if value > max_x:
+                    max_x = value
+                    
+            for value in stroke[1]:
+                if value > max_y:
+                    max_y = value
+                    
+        scale_factor = 600/max_x
+        
+        for i in range(len(trace)):
+            for f in range(len(trace[i][0])):
+                trace[i][0][f] = (trace[i][0][f] * scale_factor) + 50
+                trace[i][1][f] = (trace[i][1][f] * scale_factor) + 50
+        
+        width = (max_x*scale_factor)+100
+        height = (max_y*scale_factor)+100
+        
         target = open("./images/" + word + '/' + str(i) + '.svg', 'w')
         target.truncate()
-        target.write('<svg xmlns="http://www.w3.org/2000/svg">\n')
+        target.write('<svg width="'+str(width)+'" height="'+str(height)+'" viewBox="0 0 '+str(width)+' '+str(height)+'" xmlns="http://www.w3.org/2000/svg">\n')
 
         for stroke in trace:
             d = ' '.join(['%s%d %d' % (['M', 'L'][i>0], x, y) for i, (x, y) in enumerate(zip(stroke[0],stroke[1]))])
