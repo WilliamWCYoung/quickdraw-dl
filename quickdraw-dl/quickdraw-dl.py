@@ -5,6 +5,7 @@ import requests
 import json
 import ast
 import os
+import datetime
 
 def quickdraw(word):
     url = 'https://quickdraw.withgoogle.com/api'
@@ -32,12 +33,12 @@ def quickdraw(word):
 
     data = json.loads(r.text)
     
-    target = open("./images/" + word + '/raw_response.txt', 'w')
+    target = open("./images/" + word + '/'+datetime.datetime.now().strftime("%d%m%y%H%M%S")+'-response.txt', 'w')
     target.truncate()
     target.write(r.text)
     target.close()
 
-    i = 0
+    n = 0
 
     for trace in data["images"]:
         trace = json.loads('{"trace":'+trace["image"]+'}')["trace"]
@@ -82,7 +83,7 @@ def quickdraw(word):
         width = (max_x*scale_factor)+100
         height = (max_y*scale_factor)+100
         
-        target = open("./images/" + word + '/' + str(i) + '.svg', 'w')
+        target = open("./images/" + word + '/' + str(n) + '.svg', 'w')
         target.truncate()
         target.write('<svg width="'+str(width)+'" height="'+str(height)+'" viewBox="0 0 '+str(width)+' '+str(height)+'" xmlns="http://www.w3.org/2000/svg">\n')
 
@@ -93,7 +94,7 @@ def quickdraw(word):
         target.write('</svg>\n')
         target.close()
         
-        i += 1
+        n += 1
         
 if __name__ == "__main__":
     if len(sys.argv) != 2:
