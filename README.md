@@ -14,3 +14,13 @@ N.B. This script is a clone of the API calls made by quickdraw, and although it 
 ## Installation
 
 This script has been tested in python 3.5.2, and requires the ```requests``` library.
+
+To run, simply call the python file with a keyword as the sole argument:
+```
+python quickdraw.py [word]
+```
+
+If it's multiple words, wrap in quote marks. For example:
+```
+python quickdraw.py 'The Mona Lisa'
+```
