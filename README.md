@@ -15,12 +15,19 @@ N.B. This script is a clone of the API calls made by quickdraw, and although it 
 
 This script has been tested in python 3.5.2, and requires the ```requests``` library.
 
-To run, simply call the python file with a keyword as the sole argument:
+## Examples
+
+Return images of a dog:
 ```
-python quickdraw.py [word]
+python quickdraw.py dog
 ```
 
-If it's multiple words, wrap in quote marks. For example:
+Return images of the Mona Lisa:
 ```
-python quickdraw.py 'The Mona Lisa'
+python quickdraw.py "The Mona Lisa"
+```
+
+Return images of a random entity:
+```
+python quickdraw.py
 ```
