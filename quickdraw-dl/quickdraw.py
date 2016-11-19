@@ -7,7 +7,9 @@ import ast
 import os
 import hashlib
 
-def quickdraw(word):
+def getImages(word):
+    print("Finding images for: "+word)
+    
     url = 'https://quickdraw.withgoogle.com/api'
 
     headers = {}
@@ -26,6 +28,7 @@ def quickdraw(word):
     
     if r.status_code != 200:
         print("Failed")
+        return
         
     os.makedirs("./images", exist_ok=True)
     
@@ -101,10 +104,34 @@ def quickdraw(word):
         target.truncate()
         target.write(file_contents)
         target.close()
-        
+
+def getWords():
+    url = 'https://quickdraw.withgoogle.com/api'
+
+    headers = {}
+    headers["Host"] = "quickdraw.withgoogle.com"
+    headers["Accept"] = "application/json, text/javascript, */*; q=0.01"
+    headers["Accept-Language"] = "en-US,en;q=0.5"
+    headers["Accept-Encoding"] = "gzip, deflate, br"
+    headers["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8"
+    headers["X-Requested-With"] = "XMLHttpRequest"
+    headers["Referer"] = "https://quickdraw.withgoogle.com/"
+    headers["Connection"] = "keep-alive"
+
+    data = {'method': 'newround', 'bwords': ""}
+
+    r = requests.post(url, headers=headers, data=data)
+    
+    if r.status_code != 200:
+        print("Failed")
+        return
+    
+    data = json.loads(r.text)
+    return data["challenge"]
+
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Run as: quickdraw.py [word]")
-        exit()
+    if len(sys.argv) == 2:
+        getImages(sys.argv[1])
+    else:
+        getImages(getWords())
         
-    quickdraw(sys.argv[1])
