@@ -105,7 +105,7 @@ def getImages(word):
         target.write(file_contents)
         target.close()
 
-def getWords():
+def getWords(bwords=""):
     url = 'https://quickdraw.withgoogle.com/api'
 
     headers = {}
@@ -129,9 +129,23 @@ def getWords():
     data = json.loads(r.text)
     return data["challenge"]
 
+def intersperse(seq, value):
+    res = [value] * (2 * len(seq) - 1)
+    res[::2] = seq
+    return res
+    
+def getUniqueWords():
+    words = next(os.walk('./images/'))[1]
+    bwords = ""
+    for x in intersperse(words,","):
+        bwords += x.replace(" ","+")
+    
+    return getWords(bwords)
+    
+    
 if __name__ == "__main__":
     if len(sys.argv) == 2:
         getImages(sys.argv[1])
     else:
-        getImages(getWords())
+        getImages(getUniqueWords())
         
