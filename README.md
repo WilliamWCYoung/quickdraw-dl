@@ -1,6 +1,9 @@
 # Quickdraw-dl
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/WilliamWCYoung/quickdraw-dl/master/LICENSE.txt)
 
+## Notice
+
+Google has now released all of their data, so no more updates will be made to this repository. You can find the whole dataset at https://quickdraw.withgoogle.com/data/
 ## Introduction
 
 This script downloads doodles submitted to "Quick, Draw!", a new game by Google. The objective of the game is to draw well enough to be recognized by their neural network.
